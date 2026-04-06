@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}My reservations — {{ SITE_NAME }}{% endblock %}
+{% block content %}
+<div class="row">
+    {% include "partials/sidebar_student.html" %}
+    <div class="col-lg-9">
+        <h1 class="h3 mb-4">My reservations</h1>
+        <div class="table-responsive shadow-sm rounded bg-body">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>Book</th>
+                        <th>Reserved</th>
+                        <th>Status</th>
+                        <th>Notified</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for r in rows %}
+                    <tr>
+                        <td>{{ r.book.title }}</td>
+                        <td>{{ r.reservation_date|date:"M j, Y" }}</td>
+                        <td>{{ r.get_status_display }}</td>
+                        <td>{{ r.notified_at|date:"M j, Y H:i"|default:"—" }}</td>
+                        <td>
+                            {% if r.status == 'waiting' %}
+                            <form action="{% url 'reservations:cancel_reservation' r.pk %}" method="post" class="d-inline">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-sm btn-outline-danger">Cancel</button>
+                            </form>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr><td colspan="5" class="text-center py-4 text-muted">No reservations.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
