@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Return a book — {{ SITE_NAME }}{% endblock %}
+{% block content %}
+<div class="row">
+    {% include "partials/sidebar_student.html" %}
+    <div class="col-lg-9">
+        <h1 class="h3 mb-4">Return a book</h1>
+        <p class="text-muted">Select an active loan to confirm return. Inventory and any fines update automatically.</p>
+        <div class="list-group shadow-sm">
+            {% for i in active %}
+            <a class="list-group-item list-group-item-action d-flex justify-content-between align-items-center" href="{% url 'issues:return_book' i.id %}">
+                <span><strong>{{ i.book.title }}</strong> — due {{ i.due_date }}</span>
+                <span class="btn btn-sm btn-primary">Return</span>
+            </a>
+            {% empty %}
+            <div class="list-group-item text-muted">You have no active loans.</div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

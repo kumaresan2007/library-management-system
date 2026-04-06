@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Confirm return — {{ SITE_NAME }}{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <h1 class="h4 mb-3">Confirm return</h1>
+        <p><strong>{{ issue.book.title }}</strong></p>
+        <p class="small text-muted">Due date was {{ issue.due_date }}. Overdue fines are ₹{{ FINE_PER_DAY }}/day.</p>
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-success">I have returned this book</button>
+            <a href="{% url 'issues:my_issues' %}" class="btn btn-outline-secondary">Cancel</a>
+        </form>
+    </div>
+</div>
+{% endblock %}

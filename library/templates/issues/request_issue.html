@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Request book — {{ SITE_NAME }}{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <h1 class="h4 mb-3">Request issue</h1>
+        <p>Book: <strong>{{ book.title }}</strong></p>
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-primary">Confirm request</button>
+            <a href="{% url 'books:book_detail' book.pk %}" class="btn btn-outline-secondary">Back</a>
+        </form>
+    </div>
+</div>
+{% endblock %}

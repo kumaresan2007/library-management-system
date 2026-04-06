@@ -1,0 +1,29 @@
+/* Digital Library — light tweaks on top of Bootstrap */
+:root {
+  --lib-radius: 0.5rem;
+}
+
+.card {
+  border-radius: var(--lib-radius);
+}
+
+.table thead th {
+  font-weight: 600;
+  font-size: 0.875rem;
+}
+
+.navbar-brand {
+  letter-spacing: 0.02em;
+}
+
+.list-group-item.active {
+  background-color: var(--bs-primary);
+  border-color: var(--bs-primary);
+}
+
+/* Slightly larger tap targets on mobile */
+@media (max-width: 576px) {
+  .btn-sm {
+    padding: 0.35rem 0.65rem;
+  }
+}
