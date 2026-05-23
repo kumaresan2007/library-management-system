@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}Student dashboard — {{ SITE_NAME }}{% endblock %}
+{% block content %}
+<div class="row">
+    {% include "partials/sidebar_student.html" %}
+    <div class="col-lg-9">
+        <h1 class="h3 mb-4">Hello, {{ user.name }}</h1>
+        <div class="row g-3 mb-4">
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body">
+                        <div class="text-muted small">Active loans</div>
+                        <div class="fs-2 fw-bold text-primary">{{ my_active }}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body">
+                        <div class="text-muted small">Pending requests</div>
+                        <div class="fs-2 fw-bold text-warning">{{ my_pending }}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body">
+                        <div class="text-muted small">Overdue (active)</div>
+                        <div class="fs-2 fw-bold text-danger">{{ my_overdue }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <p class="text-muted">Use the sidebar to search books, manage issues, reservations, and fines.</p>
+    </div>
+</div>
+{% endblock %}

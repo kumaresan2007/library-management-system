@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block title %}Fines — {{ SITE_NAME }}{% endblock %}
+{% block content %}
+<div class="row">
+    {% include "partials/sidebar_student.html" %}
+    <div class="col-lg-9">
+        <h1 class="h3 mb-4">Fines &amp; estimates</h1>
+        <p class="text-muted">Recorded fines after return. Active loans show an <em>estimated</em> overdue amount if past due.</p>
+
+        <h2 class="h5 mt-4">Recorded fines</h2>
+        <div class="table-responsive shadow-sm rounded bg-body mb-4">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>Book</th>
+                        <th>Amount (₹)</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for f in fines %}
+                    <tr>
+                        <td>{{ f.issue.book.title }}</td>
+                        <td>{{ f.amount }}</td>
+                        <td>{{ f.get_status_display }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr><td colspan="3" class="text-center py-3 text-muted">No fines recorded.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <h2 class="h5">Active loans — overdue estimate</h2>
+        <div class="table-responsive shadow-sm rounded bg-body">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>Book</th>
+                        <th>Due</th>
+                        <th>Est. overdue fine (₹)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for i in active_issues %}
+                    <tr>
+                        <td>{{ i.book.title }}</td>
+                        <td>{{ i.due_date }}</td>
+                        <td>
+                            {% if i.is_overdue %}
+                                {{ i.computed_overdue_fine_amount }}
+                            {% else %}
+                                0
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr><td colspan="3" class="text-center py-3 text-muted">No active loans.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

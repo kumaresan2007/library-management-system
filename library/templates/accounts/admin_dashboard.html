@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+{% block title %}Admin dashboard — {{ SITE_NAME }}{% endblock %}
+{% block content %}
+<div class="row">
+    {% include "partials/sidebar_admin.html" %}
+    <div class="col-lg-9">
+        <h1 class="h3 mb-4">Library overview</h1>
+        <div class="row g-3 mb-4">
+            <div class="col-sm-6 col-xl-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body">
+                        <div class="text-muted small">Book titles</div>
+                        <div class="display-6 fw-bold text-primary">{{ book_titles }}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 col-xl-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body">
+                        <div class="text-muted small">Total copies / Available</div>
+                        <div class="fs-3 fw-bold">{{ total_copies }} / {{ available_copies_sum }}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 col-xl-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body">
+                        <div class="text-muted small">Registered students</div>
+                        <div class="display-6 fw-bold">{{ student_count }}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 col-xl-3">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body">
+                        <div class="text-muted small">Pending requests</div>
+                        <div class="fs-2 fw-bold text-warning">{{ pending_issues }}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 col-xl-3">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body">
+                        <div class="text-muted small">Issued</div>
+                        <div class="fs-2 fw-bold text-success">{{ active_issues }}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 col-xl-3">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body">
+                        <div class="text-muted small">Overdue</div>
+                        <div class="fs-2 fw-bold text-danger">{{ overdue_issues }}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 col-xl-3">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body">
+                        <div class="text-muted small">Waiting reservations</div>
+                        <div class="fs-2 fw-bold">{{ waiting_reservations }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-transparent fw-semibold">Titles by category</div>
+            <div class="card-body">
+                <canvas id="categoryChart" height="100"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script>
+    (function() {
+        const labels = [{% for c in category_counts %}'{{ c.category|escapejs }}'{% if not forloop.last %},{% endif %}{% endfor %}];
+        const data = [{% for c in category_counts %}{{ c.n }}{% if not forloop.last %},{% endif %}{% endfor %}];
+        if (labels.length === 0) return;
+        const ctx = document.getElementById('categoryChart');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Books per category',
+                    data: data,
+                    backgroundColor: 'rgba(13, 110, 253, 0.45)',
+                    borderColor: 'rgba(13, 110, 253, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } }
+            }
+        });
+    })();
+</script>
+{% endblock %}

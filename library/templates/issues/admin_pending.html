@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}Pending requests — {{ SITE_NAME }}{% endblock %}
+{% block content %}
+<div class="row">
+    {% include "partials/sidebar_admin.html" %}
+    <div class="col-lg-9">
+        <h1 class="h3 mb-4">Pending issue requests</h1>
+        <div class="table-responsive shadow-sm rounded bg-body">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>Student</th>
+                        <th>Book</th>
+                        <th>Requested</th>
+                        <th>Copies avail.</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for r in pending %}
+                    <tr>
+                        <td>{{ r.user.name }}<br><span class="small text-muted">{{ r.user.email }}</span></td>
+                        <td>{{ r.book.title }}</td>
+                        <td>{{ r.requested_at|date:"M j, Y H:i" }}</td>
+                        <td>{{ r.book.available_copies }}</td>
+                        <td class="text-nowrap">
+                            <form action="{% url 'issues:admin_approve' r.id %}" method="post" class="d-inline">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-sm btn-success">Approve</button>
+                            </form>
+                            <form action="{% url 'issues:admin_reject' r.id %}" method="post" class="d-inline">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-sm btn-outline-danger">Reject</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr><td colspan="5" class="text-center py-4 text-muted">No pending requests.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
