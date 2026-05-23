@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Home — {{ SITE_NAME }}{% endblock %}
+{% block content %}
+<div class="row align-items-center g-4 mb-5">
+    <div class="col-lg-7">
+        <h1 class="display-5 fw-bold mb-3">Welcome to the Digital Library</h1>
+        <p class="lead text-muted">
+            Browse the catalog, request books, track loans, and manage reservations — built for college library staff and students.
+        </p>
+        <div class="d-flex flex-wrap gap-2 mt-4">
+            <a href="{% url 'books:book_list' %}" class="btn btn-primary btn-lg"><i class="bi bi-collection me-1"></i> Browse books</a>
+            <a href="{% url 'books:book_search' %}" class="btn btn-outline-primary btn-lg"><i class="bi bi-search me-1"></i> Search</a>
+            {% if not user.is_authenticated %}
+                <a href="{% url 'accounts:register' %}" class="btn btn-outline-secondary btn-lg">Student registration</a>
+            {% endif %}
+        </div>
+    </div>
+    <div class="col-lg-5">
+        <div class="card border-0 shadow-sm bg-primary-subtle">
+            <div class="card-body p-4">
+                <h2 class="h5 card-title"><i class="bi bi-info-circle me-1"></i> Quick facts</h2>
+                <ul class="mb-0 small">
+                    <li>Secure login for students and librarians</li>
+                    <li>Issue workflow with approval</li>
+                    <li>Automatic overdue fines (₹{{ FINE_PER_DAY }}/day)</li>
+                    <li>Email reminders &amp; reservation alerts</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

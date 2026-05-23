@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% block title %}Library Status — {{ SITE_NAME }}{% endblock %}
+{% block content %}
+<div class="row">
+    {% include "partials/sidebar_admin.html" %}
+    <div class="col-lg-9">
+        <h1 class="h3 mb-4">Library status</h1>
+
+        <div class="card shadow-sm mb-4">
+            <div class="card-header bg-transparent fw-semibold">Issued Books (Not Returned)</div>
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Student</th>
+                            <th>Book Title</th>
+                            <th>Due Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for issue in issued_books %}
+                        <tr>
+                            <td>{{ issue.user.name|default:issue.user.username }}</td>
+                            <td>{{ issue.book.title }}</td>
+                            <td>{{ issue.due_date|date:"M j, Y"|default:"-" }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr><td colspan="3" class="text-center text-muted py-3">No issued books.</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="card shadow-sm mb-4 border-danger-subtle">
+            <div class="card-header bg-danger-subtle fw-semibold text-danger-emphasis">Overdue Books</div>
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Late Student</th>
+                            <th>Book Title</th>
+                            <th>Due Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for issue in overdue_books %}
+                        <tr class="table-danger">
+                            <td>{{ issue.user.name|default:issue.user.username }}</td>
+                            <td>{{ issue.book.title }}</td>
+                            <td>{{ issue.due_date|date:"M j, Y" }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr><td colspan="3" class="text-center text-muted py-3">No overdue books.</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="card shadow-sm">
+            <div class="card-header bg-transparent fw-semibold">Reservations (Pending)</div>
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Queue User</th>
+                            <th>Book Title</th>
+                            <th>Reserved At</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for reservation in pending_reservations %}
+                        <tr>
+                            <td>{{ reservation.user.name|default:reservation.user.username }}</td>
+                            <td>{{ reservation.book.title }}</td>
+                            <td>{{ reservation.reserved_at|date:"M j, Y H:i" }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr><td colspan="3" class="text-center text-muted py-3">No pending reservations.</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

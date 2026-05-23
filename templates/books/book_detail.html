@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}{{ book.title }} — {{ SITE_NAME }}{% endblock %}
+{% block content %}
+<div class="row g-4">
+    <div class="col-md-4">
+        {% if book.cover_image %}
+            <img src="{{ book.cover_image.url }}" class="img-fluid rounded shadow" alt="Cover of {{ book.title }}">
+        {% else %}
+            <div class="bg-body-secondary rounded d-flex align-items-center justify-content-center p-5 text-muted" style="min-height:280px;">
+                <i class="bi bi-book display-4"></i>
+            </div>
+        {% endif %}
+    </div>
+    <div class="col-md-8">
+        <h1 class="h2">{{ book.title }}</h1>
+        <p class="lead text-muted mb-2">{{ book.author }}</p>
+        <p class="mb-1"><strong>Category:</strong> {{ book.category }}</p>
+        <p class="mb-1"><strong>ISBN:</strong> {{ book.isbn }}</p>
+        <p class="mb-4"><strong>Copies:</strong> {{ book.available_copies }} available of {{ book.total_copies }}</p>
+
+        {% if user.is_authenticated %}
+            {% if user.role == 'student' %}
+                {% if book.available_copies > 0 %}
+                    <form action="{% url 'issues:request_issue' book.id %}" method="post" class="d-inline">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-primary"><i class="bi bi-bookmark-plus me-1"></i> Request issue</button>
+                    </form>
+                {% else %}
+                    <form action="{% url 'reservations:reserve_book' book.id %}" method="post" class="d-inline">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-warning"><i class="bi bi-hourglass-split me-1"></i> Join waitlist</button>
+                    </form>
+                    <p class="small text-muted mt-2">No copies in shelf — reserve to get notified when one is returned.</p>
+                {% endif %}
+            {% elif user.role == 'admin' %}
+                <a href="{% url 'books:book_edit' book.pk %}" class="btn btn-outline-primary">Edit</a>
+                <form action="{% url 'books:book_delete' book.pk %}" method="post" class="d-inline" onsubmit="return confirm('Delete this book?');">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-outline-danger">Delete</button>
+                </form>
+            {% endif %}
+        {% else %}
+            <p class="text-muted"><a href="{% url 'accounts:login' %}">Login</a> as a student to request or reserve.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

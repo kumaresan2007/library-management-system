@@ -1,0 +1,29 @@
+{# Sidebar for student area #}
+<div class="col-lg-3 mb-4">
+    <div class="list-group shadow-sm">
+        <a class="list-group-item list-group-item-action {% if request.resolver_match.url_name == 'student_dashboard' %}active{% endif %}" href="{% url 'accounts:student_dashboard' %}">
+            <i class="bi bi-speedometer2 me-2"></i> Dashboard
+        </a>
+        <a class="list-group-item list-group-item-action" href="{% url 'books:book_list' %}">
+            <i class="bi bi-collection me-2"></i> Book catalog
+        </a>
+        <a class="list-group-item list-group-item-action" href="{% url 'books:book_search' %}">
+            <i class="bi bi-search me-2"></i> Search
+        </a>
+        <a class="list-group-item list-group-item-action" href="{% url 'issues:my_issues' %}">
+            <i class="bi bi-arrow-left-right me-2"></i> My issues
+        </a>
+        <a class="list-group-item list-group-item-action" href="{% url 'issues:return_menu' %}">
+            <i class="bi bi-box-arrow-in-left me-2"></i> Return a book
+        </a>
+        <a class="list-group-item list-group-item-action" href="{% url 'reservations:my_reservations' %}">
+            <i class="bi bi-bookmark-star me-2"></i> Reservations
+        </a>
+        <a class="list-group-item list-group-item-action" href="{% url 'issues:fine_list' %}">
+            <i class="bi bi-currency-rupee me-2"></i> Fines
+        </a>
+        <a class="list-group-item list-group-item-action" href="{% url 'issues:issue_book_page' %}">
+            <i class="bi bi-info-circle me-2"></i> How issuing works
+        </a>
+    </div>
+</div>

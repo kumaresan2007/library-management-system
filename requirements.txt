@@ -1,0 +1,5 @@
+Django>=4.2,<5.0
+mysqlclient>=2.2.0; sys_platform != "win32"
+PyMySQL>=1.1.0; sys_platform == "win32"
+Pillow>=10.0.0
+python-dotenv>=1.0.0

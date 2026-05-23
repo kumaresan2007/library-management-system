@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Verify Email — {{ SITE_NAME }}{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-5">
+        <div class="card shadow-sm">
+            <div class="card-body p-4">
+                <h1 class="h4 mb-3">Verify your email</h1>
+                <p class="text-muted small">
+                    We sent a 6-digit code to <strong>{{ email }}</strong>. Codes expire after 5 minutes.
+                </p>
+                <form method="post" novalidate>
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label class="form-label" for="id_otp">One-time code</label>
+                        {{ form.otp }}
+                        {% if form.otp.errors %}<div class="text-danger small">{{ form.otp.errors }}</div>{% endif %}
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Verify &amp; continue</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

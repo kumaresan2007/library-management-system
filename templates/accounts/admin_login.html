@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}Admin Login — {{ SITE_NAME }}{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-5">
+        <div class="card shadow-sm">
+            <div class="card-body p-4">
+                <h1 class="h4 mb-2">Admin Login</h1>
+                <p class="text-muted small mb-4">Enter your admin email and password. We'll send an OTP to your email for final verification.</p>
+
+                <form method="post" novalidate>
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label class="form-label">Email</label>
+                        <input type="email" name="email" class="form-control" placeholder="Email" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Password</label>
+                        <div style="position: relative;">
+                            <input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
+                            <span onclick="togglePassword('password')" style="position:absolute; right:10px; top:50%; transform:translateY(-50%); cursor:pointer;">
+                                👁
+                            </span>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-warning w-100">Continue</button>
+                </form>
+
+                <div class="text-center mt-3">
+                    <a href="{% url 'accounts:login' %}" class="small">Back to student login</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block extra_js %}
+<script>
+function togglePassword(id) {
+    const field = document.getElementById(id);
+    field.type = field.type === "password" ? "text" : "password";
+}
+</script>
+{% endblock %}
+
